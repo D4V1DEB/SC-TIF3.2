@@ -18,7 +18,6 @@
 
   <main class="card">
 
-    <!-- Selector de algoritmo -->
     <div class="tabs" role="tablist">
       <div class="tab active" id="tab-perm" role="tab" onclick="switchAlgo('permutation')">
         Permutación de Grupos
@@ -32,8 +31,6 @@
 
     <div class="card-body">
 
-
-      <!-- Modo: cifrar / descifrar -->
       <div class="mode-row">
         <span class="mode-label">Modo:</span>
         <div class="toggle-group">
@@ -42,13 +39,11 @@
         </div>
       </div>
 
-      <!-- Mensaje de entrada -->
       <div class="form-group">
         <label for="input-msg">Mensaje de entrada</label>
         <textarea id="input-msg" placeholder="Escribe aquí el mensaje..."></textarea>
       </div>
 
-      <!-- Clave -->
       <div class="form-group">
         <label for="input-key">
           Clave
@@ -57,13 +52,11 @@
         <input type="text" id="input-key" placeholder="" />
       </div>
 
-      <!-- Acciones -->
       <div class="actions">
         <button class="btn btn-primary" onclick="runCipher()">Procesar</button>
         <button class="btn btn-secondary" onclick="clearAll()">Limpiar</button>
       </div>
 
-      <!-- Resultado -->
       <div class="output-header">
         <label style="margin:0">Resultado</label>
         <button class="copy-btn" onclick="copyOutput()">Copiar</button>
@@ -72,10 +65,8 @@
         El resultado aparecerá aquí...
       </div>
 
-      <!-- Error -->
       <div class="error-msg" id="error-msg"></div>
 
-      <!-- Pasos del proceso (desplegable) -->
       <details class="steps-section" id="steps-section">
         <summary class="steps-title">
           <span class="steps-title-text">
@@ -89,14 +80,13 @@
       </details>
 
 
-    </div><!-- /.card-body -->
+    </div>
   </main>
 
   <footer>
     <p>SC-TIF3.2 &mdash; Seguridad en Computación</p>
   </footer>
 
-  <!-- Orden de carga: utils → algoritmos → ui → main -->
   <script src="js/utils.js"></script>
   <script src="js/permutation.js"></script>
   <script src="js/vernam.js"></script>

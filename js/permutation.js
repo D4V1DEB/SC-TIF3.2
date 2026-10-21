@@ -1,22 +1,9 @@
 /**
  * permutation.js
  * Algoritmo de Cifrado por Permutación de Grupos.
- *
- * La clave es una permutación de números 1..n separados por comas.
- * Ej: "3,1,4,2"
- *
- * Cifrado:  para cada bloque B de tamaño n → salida[j] = B[key[j]-1]
- * Descifrado: calcula la permutación inversa y aplica.
- */
-
-/**
- * parsePermKey
- * Convierte "3,1,4,2" en el arreglo [3,1,4,2] (1-indexed).
- * Lanza un Error si la clave no es una permutación válida.
- * @param {string} raw
- * @returns {number[]}
  */
 function parsePermKey(raw) {
+  // convertimos el texto a una lista de numeros
   var parts = raw.split(',').map(function (s) {
     return parseInt(s.trim(), 10);
   });
@@ -30,6 +17,7 @@ function parsePermKey(raw) {
   var n = parts.length;
   var sorted = parts.slice().sort(function (a, b) { return a - b; });
 
+  // verificamos que esten los numeros del 1 al n sin repetir
   for (var i = 0; i < n; i++) {
     if (sorted[i] !== i + 1) {
       throw new Error(
@@ -42,26 +30,22 @@ function parsePermKey(raw) {
   return parts;
 }
 
-/**
- * permutationEncrypt
- * @param {string}   msg  Texto plano
- * @param {number[]} key  Permutación 1-indexed (parsePermKey)
- * @returns {{ result: string, steps: string[] }}
- */
 function permutationEncrypt(msg, key) {
   var n = key.length;
 
-  // Rellenar con 'X' para completar el último bloque
+  // rellenamos con x hasta completar el ultimo bloque
   var padded = msg;
   while (padded.length % n !== 0) padded += 'X';
 
-  var steps  = [];
+  var steps = [];
   var result = '';
 
+  // procesamos el mensaje en bloques del tamano de la clave
   for (var i = 0; i < padded.length; i += n) {
     var block = padded.slice(i, i + n);
-    var out   = '';
+    var out = '';
 
+    // acomodamos las letras segun las posiciones de la clave
     for (var j = 0; j < n; j++) {
       out += block[key[j] - 1];
     }
@@ -76,12 +60,6 @@ function permutationEncrypt(msg, key) {
   return { result: result, steps: steps };
 }
 
-/**
- * permutationDecrypt
- * @param {string}   msg  Texto cifrado (debe ser múltiplo de n)
- * @param {number[]} key  Permutación 1-indexed (parsePermKey)
- * @returns {{ result: string, steps: string[] }}
- */
 function permutationDecrypt(msg, key) {
   var n = key.length;
 
@@ -92,21 +70,21 @@ function permutationDecrypt(msg, key) {
     );
   }
 
-  // Calcular permutación inversa:
-  // key[j] = k  →  ciph[j] venía de plain[k-1]
-  // invKey[k-1] = j+1  →  plain[k-1] = ciph[invKey[k-1]-1]
+  // calculamos la clave inversa para saber la posicion original de cada letra
   var invKey = new Array(n);
   for (var j = 0; j < n; j++) {
     invKey[key[j] - 1] = j + 1;
   }
 
-  var steps  = [];
+  var steps = [];
   var result = '';
 
+  // procesamos el mensaje cifrado por bloques
   for (var i = 0; i < msg.length; i += n) {
     var block = msg.slice(i, i + n);
-    var out   = '';
+    var out = '';
 
+    // reordenamos el bloque con la clave inversa para recuperar el texto
     for (var j = 0; j < n; j++) {
       out += block[invKey[j] - 1];
     }
